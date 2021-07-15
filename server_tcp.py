@@ -47,9 +47,10 @@ def connect(ip,port):
             
             
 def main():
-    print("usage ./server.py <local ip addr> <port>\n")
     try:
         connect(sys.argv[1],sys.argv[2])
     except KeyboardInterrupt:
         print("[-]closed")
+    except Exception:
+    	print("[-]usage ./server.py <local ip addr> <port>\n")
 main()
