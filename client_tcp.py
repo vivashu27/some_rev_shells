@@ -72,8 +72,10 @@ def connect(ip,port):
 def main():
     try:
         connect(str(argv[1]),int(argv[2]))
-    except Exception as e:
+    except IndexError: as e:
         print("usage ./client.py <target ip addr> <port>\n")
+    except Exception as e:
+    	print(str(e))
     
 main()
             

